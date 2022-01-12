@@ -1,0 +1,37 @@
+// SPDX-License-Identifier:GPL-30
+pragma solidity >= 0.7.0 < 0.9.0;
+
+contract lec{
+
+    uint256[] public agearray;  //현재는 배열의 길이가 지정되어 있지않다. (바람직하지 않음)
+
+    function agelength() public view returns(uint256){
+        return agearray.length;
+    }   //agearray 배열의 길이(원소개수)를 구한다
+
+    function agepush(uint256 _age)public{
+        agearray.push(_age);
+    }   //배열에 입력한 값을 추가해준다
+
+    function ageget(uint256 _index)public view returns(uint256){
+        return agearray[_index];
+    }   //배열의 값을 출력한다
+
+    function apepop()public{
+        agearray.pop();
+
+    }   //가장 최신의 값을 지운다
+
+    function agedelete(uint256 _index)public{
+        delete agearray[_index];
+    }   // 지정한 인덱스의 값을 지운다
+    //pop 와 delete 의 차이는 pop는 그 인덱스 자체가 사라져 길이가 줄고
+    //delte는 인덱스의 값이 0으로 대체되는 것이라 인덱스 길이가 줄지는 않는다
+
+    function agechange(uint256 _index, uint256 _age)public {
+        agearray[_index]=_age;
+    }   /*이런식으로 특정 인덱스의 값을 교채할수 있다. 하지만 인덱스의 길이보다 큰 값의 인덱스를
+    바꾸는건 불가능하다 -> 에러발생*/
+
+
+}
