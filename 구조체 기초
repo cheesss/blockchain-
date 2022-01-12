@@ -1,0 +1,31 @@
+// SPDX-License-Identifier:GPL-30
+pragma solidity >= 0.7.0 < 0.9.0;
+contract lec20{
+
+    struct s{
+         uint256 age;
+         string name;
+
+    }
+
+    /*mapping(uint256=>s) public sMapping;
+    s[] public sArray;
+    //구조체로 선언한 s 도 하나의 자료형이 된것으로 간주한다
+    */
+    
+    function me(uint256 _age, string memory _name)pure public returns(s memory){
+        return s(_age, _name);
+        //구조체에 입력데이터를 저장하려면 memory를 입력해야한다(일반 지료형이 아니므로)
+
+    }
+     function createS(uint256 _age,string memory _name) pure public returns(s memory) {
+        return s(_age,_name);
+    }
+      
+    function getsArray(uint256 _index)  public view returns(s memory){
+       return sMapping[_index];
+    }
+    function createsArray(uint256 _age,string memory _name)  public {
+       sArray.push(s(_age,_name));
+    }
+}
