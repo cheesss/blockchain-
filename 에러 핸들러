@@ -1,0 +1,31 @@
+//SPDX License-Identifier:GPL-3.0
+pragma solidity >=0.7.0 <0.9.0;
+
+//에러 핸들러 require revert assert 
+contract lec{
+
+    /*
+      assert는 가스를 다 소비한 후 특정 조건 부합하지 않을시 에러발생
+      revert 조건없이 에러 발생 , 가스 환불
+      require 특정한 조건에 부합하지 않을시 에러발생, 가스 환불
+    */
+
+    function assertnow() public pure{
+        assert(false); 
+         //assert는 가스 환불이 안되며 false 일때 실행된다.
+    }
+    function revertNow() public pure{
+        revert("error");   //괄호 안에는 오류메세지가 온다.->if or require 
+    }   //assert 는 효율적이지 못해 테스트용으로 사용한다.
+
+    function requireNow()public pure{
+        require(false,"occurred");
+    }
+      function onlyAdults(uint256 _age) public pure returns(string memory){
+        if( _age < 19){
+            revert("You are not allowed to pay for the cigarette");
+        }
+        return "Your payment is scceeded";
+        //if문을 이용해 조건 사용 불가한 revert를 조건을 합성하여 사용할 수 있게 되었다
+    }
+}
