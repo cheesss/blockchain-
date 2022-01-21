@@ -1,0 +1,17 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.7.0 <0.9.0;
+
+//modifier 은 에러컨트롤러의 편리한 수정을 위해 사용된다
+contract lec27{
+
+    modifier onlyAdults2(uint256 _age){
+         require(_age>18,"You are not allowed to pay for the cigarette");
+         _; //_;는 modifier 뒤에 반드시 와야한다.
+    }       //파라미터 없는 modifier 도 사용가능
+
+    function BuyCigarette2(uint256 _age) public onlyAdults2(_age) returns(string memory){
+        return "Your payment is scceeded";
+    }   //modifier을 적용할 함수의 public 뒤에 modifier가 입력되어야한다. 
+  
+}
