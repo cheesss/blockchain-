@@ -1,0 +1,19 @@
+// SPDX-License-Identifier:GPL -30
+pragma solidity >=0.7.0 <0.9.0;
+
+
+contract banking{
+    //주소.balance 는 해당 주소에 남은 이더리움 잔액을 나타낸다.
+    //msg.sender 은 스마트 컨트랙을 사용하는 주체
+
+    event send_info(address _msgSender, uint256 _currentValue);
+    event MycurrentValue(address _msgSender, uint _value);
+    event currentValueSomeone(address _msgSender, address _to, uint _value);
+
+
+    function sendEther(address payable _to)public payable {
+        require(msg.sender.balance>=msg.value, "jango boojok");
+        _to.transfer(msg.value);
+        emit send_info(msg.sender, (msg.sender).balance);
+    }
+}
