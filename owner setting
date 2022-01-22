@@ -1,0 +1,27 @@
+// SPDX-License-Identifier:GPL -30
+pragma solidity >=0.7.0 <0.9.0;
+
+
+contract banking{
+
+    address owner;  //주소타입 변수선언
+    constructor() payable{
+        owner = msg.sender; //컨트랙트 실행 시 컨트랙트에게 이더리움을 넣을 수 있다
+    }                       //이를 이용해 owner을 초창기에 정할 수 있다(오너는 처음 이더리움을 보내준 계정)
+
+    //주소.balance 는 해당 주소에 남은 이더리움 잔액을 나타낸다.
+    //msg.sender 은 스마트 컨트랙을 사용하는 주체
+
+    event send_info(address _msgSender, uint256 _currentValue);
+    event MycurrentValue(address _msgSender, uint _value);
+    event currentValueSomeone(address _msgSender, address _to, uint _value);
+
+
+    function sendEther(address payable _to)public payable {
+        require(msg.sender == owner, "only ownder!");   //require을 이용해 owner만 함수 실행이 가능하게 설정해줄 수 있다
+                                                        //위치에 따라 오너가 아닌 주소의 가용 함수 범위 설정가능
+        require(msg.sender.balance>=msg.value, "jango boojok");
+        _to.transfer(msg.value);
+        emit send_info(msg.sender, (msg.sender).balance);
+    }
+}
