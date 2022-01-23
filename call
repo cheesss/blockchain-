@@ -1,0 +1,51 @@
+// SPDX-License-Identifier:GPL -30
+pragma solidity >=0.7.0 <0.9.0;
+
+/*call 송금 기능, 외부 스마트 컨트랙 함수 부르기, 가변적인 gas이용, 이스탄불 하트포크 이후 call사용 권장
+재진입 공격 위험 존재->check_effect_interaction_pattern 이용해야함
+*/
+contract add{
+    event just_fallback(string _str);
+    event just_receive(string _str);
+
+    function addNumber(uint256 num1, uint256 num2) public pure returns(uint256){
+        return num1+num2;
+    }
+    fallback()external{
+        emit just_fallback("just fallback is called");
+    }
+    receive()external payable{
+        emit just_receive("just receive is called");
+    }
+}
+
+contract caller{
+    event calledFunction(bool _success, bytes _output);
+   
+    //1. 송금하기 
+    function transferEther(address payable _to) public payable{
+        (bool success,) = _to.call{value:msg.value}("");
+        require(success,"failed to transfer ether");
+    }
+    
+    //2. 외부 스마트 컨트랙 함수 부르기 
+    function callMethod(address _contractAddr,uint256 _num1, uint256 _num2) public{
+        
+        (bool success, bytes memory outputFromCalledFunction) = _contractAddr.call(
+             abi.encodeWithSignature("addNumber(uint256,uint256)",_num1,_num2)
+            );  //abi.encodeWithSignature는 함수 이름이다 이를 이용해 add컨트랙의 addNumber함수를 불러온다
+              
+        require(success,"failed to transfer ether");
+        emit calledFunction(success,outputFromCalledFunction);
+    }
+    
+    function callMethod3(address _contractAddr) public payable{
+        
+        (bool success, bytes memory outputFromCalledFunction) = _contractAddr.call{value:msg.value}(
+             abi.encodeWithSignature("Nothing()")
+            );
+              
+        require(success,"failed to transfer ether");
+        emit calledFunction(success,outputFromCalledFunction);
+    }
+}
