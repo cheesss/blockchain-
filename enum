@@ -1,0 +1,54 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.7.0 <0.9.0;
+
+//enum 은 사람이 읽을 수 있도록 정의된 상수세트 타입이다.(0~255)
+//  enum 이름{
+//  } 이런식으로
+contract lec38{
+    
+    enum CarStatus{
+        TurnOff,
+        TurnOn,
+        Driving,
+        Stop
+    } //지정해준 타입으로 차 상태 선언
+    
+    CarStatus public carStatus;
+    
+    constructor(){
+        carStatus = CarStatus.TurnOff;//enum을 사용하려면 선언해준변수 = enum이름.enum요소 이런식으로 써야한다.
+    }
+    
+    event carCurrentStatus(CarStatus _carStatus, uint256 _carStatusInInt);
+    
+    function turnOnCar() public {
+        require(carStatus == CarStatus(0), "To turn on, your car must be turned off");//차가 꺼져있어야 킬 수 있으므로 걸러준다
+        carStatus = CarStatus(1);
+        emit carCurrentStatus(carStatus,uint256(carStatus));//출력하기 위해선 형 변환이 필요하다
+    }
+    
+
+    function DrivingCar() public {
+        require(carStatus == CarStatus.TurnOn, "To drive a car, your car must be turned on");
+        carStatus = CarStatus.Driving;
+        emit carCurrentStatus(carStatus,uint256(carStatus));
+    }
+    
+    function StopCar() public {
+        require(carStatus == CarStatus.Driving, "To drive a car, your car must be turned on");
+        carStatus = CarStatus.Stop;
+        emit carCurrentStatus(carStatus,uint256(carStatus));
+    }
+    
+    function turnOffCar() public {
+        require(carStatus == CarStatus.TurnOn 
+                || carStatus == CarStatus.Stop , "To turn off, your car must be turned on or driving");
+        carStatus = CarStatus.TurnOff;
+        emit carCurrentStatus(carStatus,uint256(carStatus));
+    }
+
+    function CheckStatus() public view returns(CarStatus) {
+        return carStatus;
+    }
+}
