@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.7.0 <0.9.0;
+
+/*library 는 기존과 다른 스마트 컨트랙 종류
+재사용 가능한 코드이다. -> 가스비 절감 가능(재배포 기능)
+데이터 타입 적용으로 인해 좀 더 쉬운 사용
+fallback 함수 사용 불가(이더리움 소유 불가 의미)
+payable 불가
+
+*/
+library safe_math{
+    function add(uint8 a, uint8 b)internal pure returns (uint8) {   //0~255, 0.8버전 부터는 오버플로우를 방지한다
+        require (a+b >= a, "safe_math: addition overflow");
+        return a+b;
+    }
+}
+contract lec{
+    using safe_math for uint8;
+    uint8 public a;
+
+    function become_over_flow(uint8 _num1, uint8 _num2) public {
+        a = safe_math.add(_num1,_num2);
+    }
+}
