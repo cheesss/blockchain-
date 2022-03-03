@@ -1,0 +1,24 @@
+//SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.7.0 <0.9.0;
+contract helloWorld{
+    uint private simpleInt;
+
+    function getValue() public view returns (uint){
+        return simpleInt;
+    }
+
+    function setValue(uint _value) public{
+        simpleInt = _value;
+    }
+}  
+    contract client{
+
+        function useNewKeyword() public returns (uint){
+            helloWorld myObj =new helloWorld();
+
+            myObj.setValue(10);
+
+        return myObj.getValue();
+    }
+}
